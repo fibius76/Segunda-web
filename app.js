@@ -261,7 +261,7 @@
       showToast("Anuncio enviado. Lo publicamos apenas lo revisemos.");
     } catch (err) {
       console.error(err);
-      errorEl.textContent = "No pudimos publicar tu anuncio. Revisa los datos e intenta de nuevo.";
+      errorEl.textContent = "No pudimos publicar tu anuncio: " + (err.message || err);
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = "Publicar anuncio";
