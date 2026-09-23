@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Segunda: explora artículos usados y prueba cómo publicar tu anuncio."><title>Segunda · Una segunda vida</title><link rel="icon" href="favicon.png" type="image/png"><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async onload="window.__supabaseLoaded&&window.__supabaseLoaded()" onerror="window.__supabaseFailed&&window.__supabaseFailed()"></script></head>
+<body><header><a class="brand" href="./" aria-label="Segunda inicio"><img src="segunda-logo.png" alt="Segunda"></a><span class="country">Colombia · COP · v3</span><button class="primary" id="publish" onclick="document.getElementById('listing').showModal()">Compartir una pieza</button></header>
+<main><div class="intro"><div><p class="eyebrow">OBJETOS QUE SIGUEN CONTANDO HISTORIAS</p><h1>Una nueva vida<br><em>para cada cosa.</em></h1></div><p class="intro-note">Ropa, calzado, hogar y artículos de bebé<br>para descubrir sin prisa.</p></div>
+<section aria-label="Buscar artículos"><div class="search-row"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="¿Qué estás buscando?" aria-label="Buscar artículos"></label><label class="city">Ciudad<select id="city"><option value="">Toda Colombia</option><option>Bogotá</option><option>Medellín</option><option>Cali</option></select></label></div><nav id="categories" aria-label="Categorías"><button class="category active" data-category="" aria-pressed="true">Todo</button><button class="category" data-category="Hombre" aria-pressed="false">Hombre</button><button class="category" data-category="Mujer" aria-pressed="false">Mujer</button><button class="category" data-category="Moda de diseño" aria-pressed="false">Moda de diseño</button><button class="category" data-category="Niños" aria-pressed="false">Niños</button><button class="category" data-category="Hogar" aria-pressed="false">Hogar</button><button class="category" data-category="Deportes" aria-pressed="false">Deportes</button><button class="category" data-category="Electrónica" aria-pressed="false">Electrónica</button><button class="category" data-category="Libros" aria-pressed="false">Libros</button></nav>
+<nav id="subcategories" aria-label="Subcategorías" hidden></nav>
+<div class="brands"><p class="eyebrow" style="margin:0 0 10px">MARCAS MÁS VENDIDAS</p><nav id="brands" aria-label="Marcas"><button class="category active" data-brand="" aria-pressed="true">Todas</button><button class="category" data-brand="Nike" aria-pressed="false">Nike</button><button class="category" data-brand="Adidas" aria-pressed="false">Adidas</button><button class="category" data-brand="Zara" aria-pressed="false">Zara</button><button class="category" data-brand="Bershka" aria-pressed="false">Bershka</button><button class="category" data-brand="Withman" aria-pressed="false">Withman</button><button class="category" data-brand="Chevignon" aria-pressed="false">Chevignon</button></nav></div></section>
+<section class="catalog" aria-label="Artículos"><div class="catalog-heading"><div><h2>Piezas por descubrir</h2><p id="count" aria-live="polite"></p></div><label class="sort">Ordenar<select id="sort"><option value="recent">Más recientes</option><option value="low">Menor precio</option><option value="high">Mayor precio</option></select></label></div><div class="grid" id="grid"></div><div id="empty" hidden><h3>No encontramos artículos</h3><p>Prueba otra palabra o cambia los filtros.</p><button id="reset">Limpiar filtros</button></div></section>
+<aside class="demo"><span class="demo-badge">CÓMO FUNCIONA</span><p>Publica tu artículo y nuestro equipo lo revisa antes de mostrarlo. El contacto entre comprador y vendedor es directo por WhatsApp.</p></aside></main>
+<footer><a class="brand" href="./" aria-label="Segunda inicio"><img src="segunda-logo.png" alt="Segunda"></a><span>Menos cosas guardadas. Más cosas en uso.</span><details><summary>Créditos de fotografías</summary><a href="https://unsplash.com/photos/blue-washed-jacket-hanging-on-white-door-_BDBEP0ePQc" target="_blank" rel="noopener">Chaqueta: kemal alkan / Unsplash</a><a href="https://unsplash.com/photos/person-wearing-gray-and-white-low-top-sneaker-xSnDsww9fC0" target="_blank" rel="noopener">Tenis: Travis / Unsplash</a><a href="https://unsplash.com/photos/shallow-focus-photo-of-brown-padded-armchair-B3wTMszErQY" target="_blank" rel="noopener">Sillón: Milada Vigerova / Unsplash</a><a href="https://unsplash.com/photos/fdPlZXc-ZwU" target="_blank" rel="noopener">Body de bebé: Mediamodifier / Unsplash</a></details></footer>
+<dialog id="detail"><button class="close" aria-label="Cerrar detalle" onclick="this.closest('dialog').close()">×</button><div id="detail-content"></div></dialog>
+<dialog id="listing"><button class="close" aria-label="Cerrar formulario" onclick="this.closest('dialog').close()">×</button><p class="eyebrow">UNA SEGUNDA HISTORIA</p><h2>Comparte tu artículo</h2><p class="muted">Lo revisamos antes de publicarlo. Te contactan directo por WhatsApp.</p><form id="form"><label>Título<input name="title" required maxlength="80" placeholder="Ej. Chaqueta de jean, talla M"></label><div class="form-row"><label>Precio en COP<input name="price" type="number" min="1000" max="100000000" step="1000" required placeholder="150000"></label><label>Categoría<select name="category" id="form-category" required><option value="">Elige una</option><option>Hombre</option><option>Mujer</option><option>Moda de diseño</option><option>Niños</option><option>Hogar</option><option>Deportes</option><option>Electrónica</option><option>Libros</option></select></label><label id="form-subcategory-wrap" hidden>Subcategoría<select name="subcategory" id="form-subcategory"></select></label><label>Marca (opcional)<select name="brand"><option value="">Sin marca / otra</option><option>Nike</option><option>Adidas</option><option>Zara</option><option>Bershka</option><option>Withman</option><option>Chevignon</option></select></label></div><div class="form-row"><label>Ciudad<select name="city"><option>Bogotá</option><option>Medellín</option><option>Cali</option></select></label><label>Estado<select name="condition"><option>Como nuevo</option><option>Buen estado</option><option>Con señales de uso</option></select></label></div><label>Descripción<textarea name="description" required minlength="10" maxlength="1000" rows="3" placeholder="Cuenta en qué estado está y qué incluye."></textarea></label><label>Foto (opcional)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp"><span class="muted">JPG, PNG o WebP · Máximo 5 MB</span></label><div class="form-row"><label>Tu nombre<input name="seller_name" required minlength="2" maxlength="60" placeholder="Ej. María Pérez"></label><label>WhatsApp (10 dígitos)<input name="seller_whatsapp" required pattern="[0-9]{10}" placeholder="3001234567"></label></div><p id="form-error" role="alert"></p><button type="submit" class="primary wide">Publicar anuncio</button></form></dialog><div id="toast" role="status" hidden></div>
+<script>
+document.body.style.border = "20px solid red";
+document.body.insertAdjacentHTML("afterbegin", '<div style="background:red;color:white;font-size:24px;font-weight:bold;padding:20px;text-align:center;">JAVASCRIPT SÍ ESTÁ FUNCIONANDO</div>');
+const SUPABASE_URL = "https://rbtyegheeuhaanxfuivz.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_r2_2NNqGRINqzIg8v3H1Ww_yUDZd3_x";
+
+let supabase = null;
+let dbFailed = false;
+
+function showConnectionError() {
+  grid.innerHTML = `<p>No pudimos conectar con la base de datos. Verifica tu conexión a internet y recarga la página.</p>`;
+  countEl.textContent = "Error de conexión";
+}
+
+window.__supabaseLoaded = function () {
+  try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    loadItems();
+  } catch (err) {
+    console.error("No se pudo conectar con la base de datos:", err);
+    dbFailed = true;
+    showConnectionError();
+  }
+};
+window.__supabaseFailed = function () {
+  console.error("El SDK de Supabase no cargó.");
+  dbFailed = true;
+  showConnectionError();
+};
+setTimeout(() => {
+  if (!supabase && !dbFailed) {
+    dbFailed = true;
+    showConnectionError();
+  }
+}, 8000);
+
+const SUBCATEGORIES = {
+  Mujer: ["Vestidos", "Chaquetas", "Zapatos", "Sneakers"],
+  Hombre: ["Camisas", "Zapatos", "Sacos", "Camisetas"],
+};
+
+const state = { search: "", category: "", subcategory: "", brand: "", city: "", sort: "recent" };
+let items = [];
+
+const grid = document.getElementById("grid");
+const countEl = document.getElementById("count");
+const emptyEl = document.getElementById("empty");
+
+const money = (n) =>
+  new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(n);
+
+async function loadItems() {
+  if (!supabase) {
+    grid.innerHTML = `<p>No pudimos conectar con la base de datos. Verifica tu conexión a internet y recarga la página.</p>`;
+    countEl.textContent = "Error de conexión";
+    return;
+  }
+  let query = supabase.from("items").select("*").eq("status", "active");
+
+  if (state.category) query = query.eq("category", state.category);
+  if (state.subcategory) query = query.eq("subcategory", state.subcategory);
+  if (state.brand) query = query.eq("brand", state.brand);
+  if (state.city) query = query.eq("city", state.city);
+  if (state.search) query = query.ilike("title", `%${state.search}%`);
+
+  if (state.sort === "low") query = query.order("price", { ascending: true });
+  else if (state.sort === "high") query = query.order("price", { ascending: false });
+  else query = query.order("created_at", { ascending: false });
+
+  const { data, error } = await query.limit(60);
+  if (error) {
+    console.error(error);
+    grid.innerHTML = `<p>No pudimos cargar los artículos. Intenta de nuevo.</p>`;
+    return;
+  }
+  items = data;
+  render();
+}
+
+function render() {
+  countEl.textContent = `${items.length} artículo${items.length === 1 ? "" : "s"}`;
+  emptyEl.hidden = items.length !== 0;
+  grid.innerHTML = items
+    .map(
+      (it) => `
+    <button class="card" data-id="${it.id}">
+      <div class="card-image">
+        ${
+          it.photo_url
+            ? `<img src="${it.photo_url}" alt="${escapeHtml(it.title)}">`
+            : `<div class="no-photo">${escapeHtml(it.title)}</div>`
+        }
+        <span class="condition">${it.condition}</span>
+      </div>
+      <div class="card-body">
+        <p class="card-category">${it.category}${it.brand ? " · " + it.brand : ""}</p>
+        <h3>${escapeHtml(it.title)}</h3>
+        <p class="price">${money(it.price)}</p>
+        <p class="location">${it.city}</p>
+      </div>
+    </button>`
+    )
+    .join("");
+
+  grid.querySelectorAll(".card").forEach((card) => {
+    card.addEventListener("click", () => openDetail(card.dataset.id));
+  });
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function openDetail(id) {
+  const it = items.find((i) => i.id === id);
+  if (!it) return;
+  const wa = `https://wa.me/57${it.seller_whatsapp}?text=${encodeURIComponent(
+    `Hola, vi "${it.title}" en Segunda y me interesa.`
+  )}`;
+  document.getElementById("detail-content").innerHTML = `
+    ${it.photo_url ? `<img class="detail-image" src="${it.photo_url}" alt="${escapeHtml(it.title)}">` : ""}
+    <p class="card-category">${it.category}${it.subcategory ? " · " + it.subcategory : ""}${it.brand ? " · " + it.brand : ""} · ${it.condition}</p>
+    <h2>${escapeHtml(it.title)}</h2>
+    <p class="price">${money(it.price)}</p>
+    <p class="location">${it.city}</p>
+    <p class="detail-description">${escapeHtml(it.description)}</p>
+    <a class="primary wide" style="display:block;text-align:center;text-decoration:none;margin-top:16px" href="${wa}" target="_blank" rel="noopener">Contactar por WhatsApp</a>
+  `;
+  document.getElementById("detail").showModal();
+}
+
+document.getElementById("search").addEventListener("input", (e) => {
+  state.search = e.target.value.trim();
+  loadItems();
+});
+document.getElementById("city").addEventListener("change", (e) => {
+  state.city = e.target.value;
+  loadItems();
+});
+document.getElementById("sort").addEventListener("change", (e) => {
+  state.sort = e.target.value;
+  loadItems();
+});
+const subcatNav = document.getElementById("subcategories");
+
+function renderSubcategories() {
+  const list = SUBCATEGORIES[state.category];
+  if (!list) {
+    subcatNav.hidden = true;
+    subcatNav.innerHTML = "";
+    return;
+  }
+  subcatNav.hidden = false;
+  subcatNav.innerHTML =
+    `<button class="category active" data-subcategory="" aria-pressed="true">Todo ${state.category}</button>` +
+    list
+      .map((s) => `<button class="category" data-subcategory="${s}" aria-pressed="false">${s}</button>`)
+      .join("");
+}
+
+document.getElementById("categories").addEventListener("click", (e) => {
+  const btn = e.target.closest(".category");
+  if (!btn) return;
+  document.querySelectorAll("#categories .category").forEach((b) => {
+    b.classList.remove("active");
+    b.setAttribute("aria-pressed", "false");
+  });
+  btn.classList.add("active");
+  btn.setAttribute("aria-pressed", "true");
+  state.category = btn.dataset.category;
+  state.subcategory = "";
+  renderSubcategories();
+  loadItems();
+});
+
+subcatNav.addEventListener("click", (e) => {
+  const btn = e.target.closest(".category");
+  if (!btn) return;
+  subcatNav.querySelectorAll(".category").forEach((b) => {
+    b.classList.remove("active");
+    b.setAttribute("aria-pressed", "false");
+  });
+  btn.classList.add("active");
+  btn.setAttribute("aria-pressed", "true");
+  state.subcategory = btn.dataset.subcategory;
+  loadItems();
+});
+
+document.getElementById("brands").addEventListener("click", (e) => {
+  const btn = e.target.closest(".category");
+  if (!btn) return;
+  document.querySelectorAll("#brands .category").forEach((b) => {
+    b.classList.remove("active");
+    b.setAttribute("aria-pressed", "false");
+  });
+  btn.classList.add("active");
+  btn.setAttribute("aria-pressed", "true");
+  state.brand = btn.dataset.brand;
+  loadItems();
+});
+document.getElementById("reset").addEventListener("click", () => {
+  state.search = "";
+  state.category = "";
+  state.subcategory = "";
+  state.brand = "";
+  state.city = "";
+  state.sort = "recent";
+  document.getElementById("search").value = "";
+  document.getElementById("city").value = "";
+  document.getElementById("sort").value = "recent";
+  document.querySelectorAll("#categories .category").forEach((b, i) => {
+    b.classList.toggle("active", i === 0);
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+  });
+  document.querySelectorAll("#brands .category").forEach((b, i) => {
+    b.classList.toggle("active", i === 0);
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+  });
+  renderSubcategories();
+  loadItems();
+});
+
+document.querySelectorAll("dialog .close").forEach((btn) => {
+  btn.addEventListener("click", () => btn.closest("dialog").close());
+});
+
+document.getElementById("publish").addEventListener("click", () => {
+  document.getElementById("listing").showModal();
+});
+
+document.getElementById("form-category").addEventListener("change", (e) => {
+  const wrap = document.getElementById("form-subcategory-wrap");
+  const select = document.getElementById("form-subcategory");
+  const list = SUBCATEGORIES[e.target.value];
+  if (!list) {
+    wrap.hidden = true;
+    select.innerHTML = "";
+    return;
+  }
+  wrap.hidden = false;
+  select.innerHTML = `<option value="">Sin subcategoría</option>` + list.map((s) => `<option>${s}</option>`).join("");
+});
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const errorEl = document.getElementById("form-error");
+  errorEl.textContent = "";
+  if (!supabase) {
+    errorEl.textContent = "No hay conexión con la base de datos. Recarga la página e intenta de nuevo.";
+    return;
+  }
+  const fd = new FormData(e.target);
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Publicando...";
+
+  try {
+    let photo_url = null;
+    const file = fd.get("photo");
+    if (file && file.size > 0) {
+      const path = `${crypto.randomUUID()}-${file.name}`;
+      const { error: upErr } = await supabase.storage.from("item-photos").upload(path, file);
+      if (upErr) throw upErr;
+      photo_url = supabase.storage.from("item-photos").getPublicUrl(path).data.publicUrl;
+    }
+
+    const { error } = await supabase.from("items").insert({
+      title: fd.get("title"),
+      description: fd.get("description"),
+      price: Number(fd.get("price")),
+      category: fd.get("category"),
+      subcategory: fd.get("subcategory") || null,
+      brand: fd.get("brand") || null,
+      city: fd.get("city"),
+      condition: fd.get("condition"),
+      seller_name: fd.get("seller_name"),
+      seller_whatsapp: fd.get("seller_whatsapp"),
+      photo_url,
+      status: "pending",
+    });
+    if (error) throw error;
+
+    document.getElementById("listing").close();
+    e.target.reset();
+    showToast("Anuncio enviado. Lo publicamos apenas lo revisemos.");
+  } catch (err) {
+    console.error(err);
+    errorEl.textContent = "No pudimos publicar tu anuncio. Revisa los datos e intenta de nuevo.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Publicar anuncio";
+  }
+});
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.hidden = false;
+  setTimeout(() => (t.hidden = true), 4000);
+}
+
+countEl.textContent = "Cargando...";
+</script>
+</body></html>
