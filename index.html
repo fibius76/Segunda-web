@@ -13,7 +13,7 @@
 <header>
   <a class="brand" href="./" aria-label="Segunda inicio"><img src="segunda-logo.png" alt="Segunda"></a>
   <span class="country">Colombia · COP</span>
-  <button class="primary" id="publish">Compartir una pieza</button>
+  <button class="primary" id="publish" onclick="document.getElementById('listing').showModal()">Compartir una pieza</button>
 </header>
 
 <main>
@@ -100,22 +100,15 @@
 <footer>
   <a class="brand" href="./" aria-label="Segunda inicio"><img src="segunda-logo.png" alt="Segunda"></a>
   <span>Menos cosas guardadas. Más cosas en uso.</span>
-  <details>
-    <summary>Créditos de fotografías</summary>
-    <a href="https://unsplash.com/photos/blue-washed-jacket-hanging-on-white-door-_BDBEP0ePQc" target="_blank" rel="noopener">Chaqueta: kemal alkan / Unsplash</a>
-    <a href="https://unsplash.com/photos/person-wearing-gray-and-white-low-top-sneaker-xSnDsww9fC0" target="_blank" rel="noopener">Tenis: Travis / Unsplash</a>
-    <a href="https://unsplash.com/photos/shallow-focus-photo-of-brown-padded-armchair-B3wTMszErQY" target="_blank" rel="noopener">Sillón: Milada Vigerova / Unsplash</a>
-    <a href="https://unsplash.com/photos/fdPlZXc-ZwU" target="_blank" rel="noopener">Body de bebé: Mediamodifier / Unsplash</a>
-  </details>
 </footer>
 
 <dialog id="detail">
-  <button class="close" aria-label="Cerrar detalle">×</button>
+  <button class="close" aria-label="Cerrar detalle" onclick="this.closest('dialog').close()">×</button>
   <div id="detail-content"></div>
 </dialog>
 
 <dialog id="listing">
-  <button class="close" aria-label="Cerrar formulario">×</button>
+  <button class="close" aria-label="Cerrar formulario" onclick="this.closest('dialog').close()">×</button>
   <p class="eyebrow">UNA SEGUNDA HISTORIA</p>
   <h2>Comparte tu artículo</h2>
   <p class="muted">Lo revisamos antes de publicarlo. Te contactan directo por WhatsApp.</p>
